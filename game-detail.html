@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Detail | Game Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+
+  <!-- Container phân chia nội dung chính và quảng cáo -->
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-6 p-6">
+    <!-- Nội dung chính: 9 phần -->
+    <div class="col-span-1 md:col-span-9 bg-gray-800 p-6 rounded-lg">
+      <!-- Nút quay lại -->
+      <button class="mt-8 px-4 py-2 bg-yellow-400 text-black font-bold rounded-md hover:bg-orange-500 transition duration-300 ease-in-out" onclick="goBack()">← Quay lại</button>
+
+      <!-- Tiêu đề và mô tả game -->
+      <div id="gameDetails" class="text-center mt-8">
+        <h2 id="gameTitle" class="text-3xl font-bold text-yellow-400"></h2>
+      </div>
+
+      <!-- Iframe cho game -->
+      <div class="mt-8">
+        <iframe id="gameIframe" src="" title="Game Iframe" class="w-full h-[80vh] md:h-[60vh] border-none rounded-lg shadow-md"></iframe>
+      </div>
+      <div id="gameDetails" class="text-center mt-8">
+        <h2 class="text-3xl font-bold text-yellow-400">Instructions</h2>
+        <p id="gameInstructions" class="mt-4"></p>
+        <h2 class="text-3xl font-bold text-yellow-400">Description</h2>
+        <p id="gameDescription" class="mt-4"></p>
+      </div>
+    </div>
+
+    <!-- Quảng cáo: 3 phần -->
+    <div class="col-span-1 md:col-span-3 bg-gray-800 p-6 rounded-lg">
+      <div class="bg-gray-700 text-white text-center p-6 rounded-lg mb-6 shadow-md">
+        <p>Quảng cáo 1 (Kích thước: 100% x 250px)</p>
+      </div>
+      <div class="bg-gray-700 text-white text-center p-6 rounded-lg mb-6 shadow-md">
+        <p>Quảng cáo 2 (Kích thước: 100% x 250px)</p>
+      </div>
+      <div class="bg-gray-700 text-white text-center p-6 rounded-lg shadow-md">
+        <p>Quảng cáo 3 (Kích thước: 100% x 250px)</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Lấy game ID từ URL và mở game
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameId = urlParams.get('gameId');
+
+    const games = JSON.parse(localStorage.getItem("games"));  // Lấy dữ liệu game từ localStorage
+
+    // Hàm quay lại trang trước
+    function goBack() {
+      window.history.back();
+    }
+
+    // Hàm mở chi tiết game trong iframe
+    function openGameDetail(gameId) {
+      const game = games.find(g => g.id == gameId);
+
+      if (game) {
+        document.getElementById('gameIframe').src = game.url;
+        document.getElementById('gameTitle').textContent = game.title;
+        document.getElementById('gameDescription').textContent = game.description;
+        document.getElementById('gameInstructions').textContent = game.instructions;
+      } else {
+        alert('Game không tìm thấy!');
+      }
+    }
+
+    if (gameId) {
+      openGameDetail(gameId);
+    }
+  </script>
+
+</body>
+</html>
